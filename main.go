@@ -48,5 +48,9 @@ func main() {
 	r.GET("/fall", getFall)
 	r.GET("/fall/:id", getFallDetail)
 
+	//Projekte (Log)
+	r.GET("/log", getLog)
+	r.GET("/log/:id", getLogDetail)
+
 	r.Run(":8080")
 }

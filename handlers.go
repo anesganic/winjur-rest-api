@@ -181,6 +181,82 @@ func getSubjektDetail(c *gin.Context) {
 	c.JSON(200, s)
 }
 
+func getLog(c *gin.Context) {
+	limit, offset := getPaginationParams(c)
+
+	fallNo := c.Query("fall_no")
+	logTyp := c.Query("type")
+	owner := c.Query("owner")
+	dateFrom := c.Query("date_from")
+	dateTo := c.Query("date_to")
+
+	params := map[string]interface{}{
+		"limit":  limit,
+		"offset": offset,
+	}
+
+	query := "SELECT * FROM dbo.LOG WHERE 1=1"
+
+	if fallNo != "" {
+		query += " AND Fall = :fallNo"
+		params["fallNo"] = fallNo
+	}
+	if logTyp != "" {
+		query += " AND LogTyp = :logTyp"
+		params["logTyp"] = logTyp
+	}
+	if owner != "" {
+		query += " AND Owner = :owner"
+		params["owner"] = owner
+	}
+	if dateFrom != "" {
+		query += " AND LogDatum >= :dateFrom"
+		params["dateFrom"] = dateFrom
+	}
+	if dateTo != "" {
+		query += " AND LogDatum <= :dateTo"
+		params["dateTo"] = dateTo
+	}
+
+	query += " ORDER BY LogNo ASC OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY"
+
+	query, args, err := sqlx.Named(query, params)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Query Error: " + err.Error()})
+		return
+	}
+
+	query = db.Rebind(query)
+
+	var list []LogEintrag
+	err = db.Select(&list, query, args...)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Datenbankfehler: " + err.Error()})
+		return
+	}
+
+	c.JSON(200, list)
+}
+
+func getLogDetail(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(400, gin.H{"error": "ID muss eine Zahl sein"})
+		return
+	}
+
+	var l LogEintrag
+	query := db.Rebind("SELECT * FROM dbo.LOG WHERE LogNo = ?")
+	err = db.Get(&l, query, id)
+
+	if err != nil {
+		c.JSON(404, gin.H{"error": "Leistung (Log) nicht gefunden"})
+		return
+	}
+	c.JSON(200, l)
+}
+
 func getPaginationParams(c *gin.Context) (int, int) {
 	limit, err := strconv.Atoi(c.DefaultQuery("limit", "100"))
 	if err != nil || limit < 1 {

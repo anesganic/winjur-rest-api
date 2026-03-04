@@ -121,3 +121,75 @@ type SubjektStruct struct {
 	Beschreibung *string `db:"Beschreibung" json:"Beschreibung"`
 	INS_SERVER   string  `db:"INS_SERVER" json:"INS_SERVER"`
 }
+
+type LogEintrag struct {
+	Mandant              int        `db:"Mandant" json:"Mandant"`
+	LogNo                int        `db:"LogNo" json:"LogNo"`
+	Del                  int        `db:"Del" json:"Del"`
+	Fall                 int        `db:"Fall" json:"Fall"`
+	ColorTyp             int        `db:"ColorTyp" json:"ColorTyp"`
+	Owner                int        `db:"Owner" json:"Owner"`
+	Status               int        `db:"Status" json:"Status"`
+	Fibu                 int        `db:"Fibu" json:"Fibu"`
+	DebStatus            int        `db:"DebStatus" json:"DebStatus"`
+	DebDetail            int        `db:"DebDetail" json:"DebDetail"`
+	MWStCode             int        `db:"MWStCode" json:"MWStCode"`
+	FIBUTransfer         int        `db:"FIBUTransfer" json:"FIBUTransfer"`
+	FIBUKtoS             int        `db:"FIBUKtoS" json:"FIBUKtoS"`
+	FIBUKtoH             int        `db:"FIBUKtoH" json:"FIBUKtoH"`
+	LogDatum             time.Time  `db:"LogDatum" json:"LogDatum"`
+	DSPLY_Typ            *string    `db:"DSPLY_Typ" json:"DSPLY_Typ"`
+	DSPLY_Zusatz         *string    `db:"DSPLY_Zusatz" json:"DSPLY_Zusatz"`
+	LogText              *string    `db:"LogText" json:"LogText"`
+	LogTyp               int        `db:"LogTyp" json:"LogTyp"`
+	DokumentName         *string    `db:"DokumentName" json:"DokumentName"`
+	PathName             *string    `db:"PathName" json:"PathName"`
+	HON_ZeitVon          *float64   `db:"HON_ZeitVon" json:"HON_ZeitVon"`
+	HON_ZeitBis          *float64   `db:"HON_ZeitBis" json:"HON_ZeitBis"`
+	HON_Std              *float64   `db:"HON_Std" json:"HON_Std"`
+	HON_Satz             *float64   `db:"HON_Satz" json:"HON_Satz"`
+	HON_Total            *float64   `db:"HON_Total" json:"HON_Total"`
+	AUS_Total            *float64   `db:"AUS_Total" json:"AUS_Total"`
+	AUS_Typ              *int       `db:"AUS_Typ" json:"AUS_Typ"`
+	AUS_AnzahlFK         *float64   `db:"AUS_AnzahlFK" json:"AUS_AnzahlFK"`
+	AUS_FKPreis          *float64   `db:"AUS_FKPreis" json:"AUS_FKPreis"`
+	AUS_Km               *float64   `db:"AUS_Km" json:"AUS_Km"`
+	AUS_KmPreis          *float64   `db:"AUS_KmPreis" json:"AUS_KmPreis"`
+	NOT_Text             *string    `db:"NOT_Text" json:"NOT_Text"`
+	FRI_Erledigt         *int       `db:"FRI_Erledigt" json:"FRI_Erledigt"`
+	FRI_Tage             *float64   `db:"FRI_Tage" json:"FRI_Tage"`
+	TDO_Erledigt         *int       `db:"TDO_Erledigt" json:"TDO_Erledigt"`
+	TDO_Tage             *float64   `db:"TDO_Tage" json:"TDO_Tage"`
+	ZAL_Total            *float64   `db:"ZAL_Total" json:"ZAL_Total"`
+	ZAL_VorausZ          *int       `db:"ZAL_VorausZ" json:"ZAL_VorausZ"`
+	TER_Termin           *float64   `db:"TER_Termin" json:"TER_Termin"`
+	TER_Erledigt         *int       `db:"TER_Erledigt" json:"TER_Erledigt"`
+	TER_VorMahnzeit      *float64   `db:"TER_VorMahnzeit" json:"TER_VorMahnzeit"`
+	TER_Mahnen           *int       `db:"TER_Mahnen" json:"TER_Mahnen"`
+	AKG_Betrag           *float64   `db:"AKG_Betrag" json:"AKG_Betrag"`
+	REC_DatumVon         *string    `db:"REC_DatumVon" json:"REC_DatumVon"`
+	REC_DatumBis         *string    `db:"REC_DatumBis" json:"REC_DatumBis"`
+	REC_Total1           *float64   `db:"REC_Total1" json:"REC_Total1"`
+	REC_Zahlungen        *float64   `db:"REC_Zahlungen" json:"REC_Zahlungen"`
+	REC_Auslagen         *float64   `db:"REC_Auslagen" json:"REC_Auslagen"`
+	REC_Std              *float64   `db:"REC_Std" json:"REC_Std"`
+	REC_HonorarStd       *float64   `db:"REC_HonorarStd" json:"REC_HonorarStd"`
+	REC_Honorar          *float64   `db:"REC_Honorar" json:"REC_Honorar"`
+	REC_MWSt             *float64   `db:"REC_MWSt" json:"REC_MWSt"`
+	REC_Total2           *float64   `db:"REC_Total2" json:"REC_Total2"`
+	REC_Entwurf          *int       `db:"REC_Entwurf" json:"REC_Entwurf"`
+	REC_Zwischenrechnung *int       `db:"REC_Zwischenrechnung" json:"REC_Zwischenrechnung"`
+	MAN_Betrag           *float64   `db:"MAN_Betrag" json:"MAN_Betrag"`
+	MAN_Frist            *time.Time `db:"MAN_Frist" json:"MAN_Frist"`
+	MAN_Art              *int       `db:"MAN_Art" json:"MAN_Art"`
+	MAN_LastRef          *string    `db:"MAN_LastRef" json:"MAN_LastRef"`
+	FXH_No               *int       `db:"FXH_No" json:"FXH_No"`
+	FXH_Betrag           *float64   `db:"FXH_Betrag" json:"FXH_Betrag"`
+	FXH_AHV              *int       `db:"FXH_AHV" json:"FXH_AHV"`
+	FRG_Betrag           *float64   `db:"FRG_Betrag" json:"FRG_Betrag"`
+	INS_DATE             time.Time  `db:"INS_DATE" json:"INS_DATE"`
+	UPD_DATE             time.Time  `db:"UPD_DATE" json:"UPD_DATE"`
+	INS_SABE             *string    `db:"INS_SABE" json:"INS_SABE"`
+	UPD_SABE             *string    `db:"UPD_SABE" json:"UPD_SABE"`
+	INS_SERVER           *string    `db:"INS_SERVER" json:"INS_SERVER"`
+}
