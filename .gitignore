@@ -1,0 +1,13 @@
+# Lokale Umgebungsvariablen (Passwörter, Hashes)
+.env
+
+# SSL/TLS Zertifikate (Private Keys)
+certs/
+
+# Kompilierte Go-Binaries (falls du mal lokal ohne Docker baust)
+winjur-rest-api
+winjur-rest-api.exe
+
+# OS-spezifische Dateien (Mac/Windows Müll)
+.DS_Store
+Thumbs.db
