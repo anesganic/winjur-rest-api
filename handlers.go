@@ -28,15 +28,39 @@ func getAnsprechpartner(c *gin.Context) {
 
 func getDomizil(c *gin.Context) {
 	limit, offset := getPaginationParams(c)
-	query := `SELECT * FROM dbo.DOMIZIL ORDER BY AdrNr ASC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY`
+	query := "SELECT * FROM dbo.DOMIZIL WHERE 1=1"
+	params := map[string]interface{}{
+		"limit":  limit,
+		"offset": offset,
+	}
+
+	if ort := c.Query("ort"); ort != "" {
+		query += " AND Ort LIKE :ort"
+		params["ort"] = "%" + ort + "%"
+	}
+
+	if plz := c.Query("plz"); plz != "" {
+		query += " AND PLZ LIKE :plz"
+		params["plz"] = plz + "%"
+	}
+
+	query += " ORDER BY AdrNr ASC OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY"
+
+	query, args, err := sqlx.Named(query, params)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Query Error: " + err.Error()})
+		return
+	}
+
 	query = db.Rebind(query)
 
 	var list []Domizil
-	err := db.Select(&list, query, offset, limit)
+	err = db.Select(&list, query, args...)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+
 	c.JSON(200, list)
 }
 
@@ -104,14 +128,6 @@ func getSubjekt(c *gin.Context) {
 	if name := c.Query("name"); name != "" {
 		query += " AND (Name1 LIKE :name OR Name2 LIKE :name)"
 		params["name"] = "%" + name + "%"
-	}
-	if ort := c.Query("ort"); ort != "" {
-		query += " AND Ort LIKE :ort"
-		params["ort"] = "%" + ort + "%"
-	}
-	if plz := c.Query("plz"); plz != "" {
-		query += " AND PLZ LIKE :plz"
-		params["plz"] = plz + "%"
 	}
 
 	query += " ORDER BY AdrNr ASC OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY"
@@ -189,12 +205,6 @@ func getSubjektDetail(c *gin.Context) {
 func getLog(c *gin.Context) {
 	limit, offset := getPaginationParams(c)
 
-	fallNo := c.Query("fall_no")
-	logTyp := c.Query("type")
-	owner := c.Query("owner")
-	dateFrom := c.Query("date_from")
-	dateTo := c.Query("date_to")
-
 	params := map[string]interface{}{
 		"limit":  limit,
 		"offset": offset,
@@ -202,23 +212,23 @@ func getLog(c *gin.Context) {
 
 	query := "SELECT * FROM dbo.LOG WHERE 1=1"
 
-	if fallNo != "" {
+	if fallNo := c.Query("fall_no"); fallNo != "" {
 		query += " AND Fall = :fallNo"
 		params["fallNo"] = fallNo
 	}
-	if logTyp != "" {
+	if logTyp := c.Query("type"); logTyp != "" {
 		query += " AND LogTyp = :logTyp"
 		params["logTyp"] = logTyp
 	}
-	if owner != "" {
+	if owner := c.Query("owner"); owner != "" {
 		query += " AND Owner = :owner"
 		params["owner"] = owner
 	}
-	if dateFrom != "" {
+	if dateFrom := c.Query("date_from"); dateFrom != "" {
 		query += " AND LogDatum >= :dateFrom"
 		params["dateFrom"] = dateFrom
 	}
-	if dateTo != "" {
+	if dateTo := c.Query("date_to"); dateTo != "" {
 		query += " AND LogDatum <= :dateTo"
 		params["dateTo"] = dateTo
 	}
